@@ -1,0 +1,22 @@
+name: localai
+author: mudler@localai.io
+branding:
+  color: purple
+  icon: edit-3
+inputs:
+  model:
+    description: "Model to install"
+    required: false
+    default: "hermes-2-theta-llama-3-8b"
+description: Starts LocalAI, available at localhost:8080
+runs:
+  using: composite
+  steps:
+    - name: Starts LocalAI
+      id: content
+      shell: bash
+      run: |
+        echo "Starting LocalAI..."
+        docker run -e -ti -d --name local-ai -p 8080:8080 localai/localai:master-ffmpeg-core run --debug ${{ inputs.model }}
+        until [ "`docker inspect -f {{.State.Health.Status}} local-ai`" == "healthy" ]; do echo "Waiting for container to be ready";  docker logs --tail 10 local-ai; sleep 2; done
+        echo "LocalAI is ready at localhost:8080"
