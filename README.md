@@ -57,5 +57,5 @@ jobs:
                     echo "$result"
                     echo EOF
                 } >> "$GITHUB_OUTPUT"
-                # now the output can be consumed with ${{ steps.summarize.outputs.message }} by other steps
+                # now the output can be consumed with ${{ steps.greet.outputs.message }} by other steps
 ```
